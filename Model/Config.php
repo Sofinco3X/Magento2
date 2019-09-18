@@ -50,11 +50,11 @@ class Config extends \Magento\Payment\Model\Config
     private $_urls = [
         'system' => [
             'test' => [
-                'https://itg3-tpeweb.paybox.fr/'
+                'https://preprod-tpeweb.paybox.fr/'
             ],
             'production' => [
-                'https://tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi',
                 'https://tpeweb1.paybox.com/cgi/MYchoix_pagepaiement.cgi',
+                'https://tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi',
             ],
         ],
         'responsive' => [
@@ -62,8 +62,8 @@ class Config extends \Magento\Payment\Model\Config
                 'https://preprod-tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi'
             ],
             'production' => [
-                'https://tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi',
                 'https://tpeweb1.paybox.com/cgi/FramepagepaiementRWD.cgi',
+                'https://tpeweb.paybox.com/cgi/FramepagepaiementRWD.cgi',
             ],
         ],
         'kwixo' => [
@@ -71,8 +71,8 @@ class Config extends \Magento\Payment\Model\Config
                 'https://preprod-tpeweb.paybox.com/php/'
             ],
             'production' => [
-                'https://tpeweb.paybox.com/php/',
                 'https://tpeweb1.paybox.com/php/',
+                'https://tpeweb.paybox.com/php/',
             ],
         ],
         'mobile' => [
@@ -80,8 +80,8 @@ class Config extends \Magento\Payment\Model\Config
                 'https://preprod-tpeweb.paybox.com/cgi/MYframepagepaiement_ip.cgi'
             ],
             'production' => [
-                'https://tpeweb.paybox.com/cgi/MYframepagepaiement_ip.cgi',
                 'https://tpeweb1.paybox.com/cgi/MYframepagepaiement_ip.cgi',
+                'https://tpeweb.paybox.com/cgi/MYframepagepaiement_ip.cgi',
             ],
         ],
         'direct' => [
@@ -89,8 +89,8 @@ class Config extends \Magento\Payment\Model\Config
                 'https://preprod-ppps.paybox.com/PPPS.php'
             ],
             'production' => [
-                'https://ppps.paybox.com/PPPS.php',
                 'https://ppps1.paybox.com/PPPS.php',
+                'https://ppps.paybox.com/PPPS.php',
             ],
         ]
     ];
