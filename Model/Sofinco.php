@@ -445,14 +445,15 @@ class Sofinco
         $values['PBX_LANGUE'] = $lang;
 
         // Choose page format depending on browser/devise
-        if ($this->_objectManager->get('Sofinco\Epayment\Helper\Mobile')->isMobile()) {
+/****removing mobile adaptation for sofinco 3XCB
+if ($this->_objectManager->get('Sofinco\Epayment\Helper\Mobile')->isMobile()) {
             $values['PBX_SOURCE'] = 'XHTML';
         }
 
         if ($config->getResponsiveConfig() == 1) {
             $values['PBX_SOURCE'] = 'RWD';
         }
-
+****/
         //Paypal Specicif
         if ($payment->getCode() == 'sfco_paypal') {
             $separator = '#';
