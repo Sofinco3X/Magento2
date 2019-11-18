@@ -50,11 +50,11 @@ class Config extends \Magento\Payment\Model\Config
     private $_urls = [
         'system' => [
             'test' => [
-                'https://preprod-tpeweb.paybox.fr/'
+                'https://preprod-tpeweb.paybox.fr/php/'
             ],
             'production' => [
-                'https://tpeweb1.paybox.com/cgi/MYchoix_pagepaiement.cgi',
-                'https://tpeweb.paybox.com/cgi/MYchoix_pagepaiement.cgi',
+                'https://tpeweb1.paybox.com/php/',
+                'https://tpeweb.paybox.com/php/',
             ],
         ],
         'responsive' => [
@@ -77,11 +77,11 @@ class Config extends \Magento\Payment\Model\Config
         ],
         'mobile' => [
             'test' => [
-                'https://preprod-tpeweb.paybox.com/cgi/MYframepagepaiement_ip.cgi'
+                'https://preprod-tpeweb.paybox.com/php/'
             ],
             'production' => [
-                'https://tpeweb1.paybox.com/cgi/MYframepagepaiement_ip.cgi',
-                'https://tpeweb.paybox.com/cgi/MYframepagepaiement_ip.cgi',
+                'https://tpeweb1.paybox.com/php/',
+                'https://tpeweb.paybox.com/php/',
             ],
         ],
         'direct' => [
