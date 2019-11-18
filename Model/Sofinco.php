@@ -651,45 +651,66 @@ if ($this->_objectManager->get('Sofinco\Epayment\Helper\Mobile')->isMobile()) {
     public function getBillingInformation(Order $order)
     {
         $address = $order->getBillingAddress();
-        $firstName = $order->getCustomerFirstname();
-        $lastName = $order->getCustomerLastname();
-        $address1 = is_array($address->getStreet()) ? $address->getStreet()[0] : $address->getStreet();
+        $firstName = remove_accents($order->getCustomerFirstname());
+        $lastName = remove_accents($order->getCustomerLastname());
+        $address1 = str_replace("."," ",is_array($address->getStreet()) ? $address->getStreet()[0] : $address->getStreet());
+        $address2 = is_array($address->getStreet()) ? str_replace("."," ",$address->getStreet()[1]) : "";
         $zipCode = $address->getPostcode();
-        $city = $address->getCity();
+        $city = remove_accents($address->getCity());
         $countryCode = $this->getCountryCode($address->getCountryId());
-        $countryName = $address->getCountryId();
+        $countryName = remove_accents($address->getCountryId());
         $countryCodeHomePhone = null;
         $homePhone = $address->getTelephone();
         $countryCodeMobilePhone = null;
         $mobilePhone = $address->getTelephone();
         
-        $xmlBillingInformation =
-        "<Billing>
-            <Address>
-                <FirstName>$firstName</FirstName>
-                <LastName>$lastName</LastName>
-                <Address1>$address1</Address1>
-                <ZipCode>$zipCode</ZipCode>
-                <City>$city</City>
-                <CountryCode>$countryCode</CountryCode>
-                <CountryName>$countryName</CountryName>
-                <CountryCodeHomePhone>$countryCodeHomePhone</CountryCodeHomePhone>
-                <HomePhone>$homePhone</HomePhone>
-                <CountryCodeMobilePhone>$countryCodeMobilePhone</CountryCodeMobilePhone>
-                <MobilePhone>$mobilePhone</MobilePhone>
-            </Address>            
-        </Billing>";
-
-        return simplexml_load_string($xmlBillingInformation);
+        $simpleXMLElement = new SimpleXMLElement("<Billing/>");
+        // $billingXML = $simpleXMLElement->addChild('Billing');
+        $addressXML = $simpleXMLElement->addChild('Address');
+        $addressXML->addChild('Title',$title);
+        $addressXML->addChild('FirstName',$firstName);
+        $addressXML->addChild('LastName',$lastName);
+        $addressXML->addChild('Address1',$address1);
+        $addressXML->addChild('Address2',$address2);
+        $addressXML->addChild('ZipCode',$zipCode);
+        $addressXML->addChild('City',$city);
+        $addressXML->addChild('CountryCode',$countryCode);
+        $addressXML->addChild('CountryName',$countryName);
+        $addressXML->addChild('CountryCodeHomePhone',$countryCodeHomePhone);
+        $addressXML->addChild('HomePhone',$homePhone);
+        $addressXML->addChild('CountryCodeMobilePhone',$countryCodeMobilePhone);
+        $addressXML->addChild('MobilePhone',$mobilePhone);
+        
+        return $simpleXMLElement->asXML();
     }
-
+    
+	private function remove_accents($string){
+        $table = array(
+        'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
+        'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+        'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O',
+        'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss',
+        'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
+        'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
+        'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
+        'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r',
+        );
+   
+        return strtr($string, $table);
+	}
+ 
     public function getCountryCode($countryCode)
     {
         $countryMapper = $this->_objectManager->get('Sofinco\Epayment\Model\IsoCountry');
 
         return $countryMapper->getIsoCode($countryCode);
     }
-    
+     public function getCountryPhoneCode($countryCode)
+    {
+        $countryMapper = $this->_objectManager->get('Sofinco\Epayment\Model\IsoCountry');
+
+        return $countryMapper->getPhoneCode($countryCode);
+    }   
     /**
      * @return Sofinco\Epayment\Model\Config Sofinco configuration object
      */
