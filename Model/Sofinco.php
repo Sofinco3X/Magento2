@@ -653,16 +653,18 @@ if ($this->_objectManager->get('Sofinco\Epayment\Helper\Mobile')->isMobile()) {
         $address = $order->getBillingAddress();
         $firstName = remove_accents($order->getCustomerFirstname());
         $lastName = remove_accents($order->getCustomerLastname());
+	$title =  $gender = $order->getCustomerGender();
+	if(empty($tilte))$title = "Mr";
         $address1 = str_replace("."," ",is_array($address->getStreet()) ? $address->getStreet()[0] : $address->getStreet());
         $address2 = is_array($address->getStreet()) ? str_replace("."," ",$address->getStreet()[1]) : "";
         $zipCode = $address->getPostcode();
         $city = remove_accents($address->getCity());
         $countryCode = $this->getCountryCode($address->getCountryId());
         $countryName = remove_accents($address->getCountryId());
-        $countryCodeHomePhone = null;
-        $homePhone = $address->getTelephone();
-        $countryCodeMobilePhone = null;
-        $mobilePhone = $address->getTelephone();
+        $countryCodeHomePhone = $this->getCountryPhoneCode($address->getCountryId());
+        $homePhone = substr($address->getTelephone(),-9);
+        $countryCodeMobilePhone = $this->getCountryPhoneCode($address->getCountryId());
+        $mobilePhone = $address->getTelephone(),-9);
         
         $simpleXMLElement = new SimpleXMLElement("<Billing/>");
         // $billingXML = $simpleXMLElement->addChild('Billing');
