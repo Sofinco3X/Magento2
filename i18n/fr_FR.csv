@@ -125,9 +125,9 @@
 "A coma separated list of Sofinco IPs.","Une liste des IPs Sofinco séparées par des virgules."
 "Enable some debugging information.","Active l'affichage d'informations de débogage supplémentaires."
 
-"Paybox System (Essential Pack)","Pack Essentiel (Paybox System)"
-"Paybox System + Paybox Direct (Flexible Pack)","Pack Flexible (Paybox System + Direct)"
-"Paybox System + Paybox Direct Plus (Flexible Pack)","Pack Plus (Paybox System + Direct plus)"
+"Sofinco System (Essential Pack)","Pack Essentiel (Sofinco System)"
+"Sofinco System + Sofinco Direct (Flexible Pack)","Pack Flexible (Sofinco System + Direct)"
+"Sofinco System + Sofinco Direct Plus (Flexible Pack)","Pack Plus (Sofinco System + Direct plus)"
 "Production","Production"
 "Test","Test"
 "Conditionnal","Sélectif"

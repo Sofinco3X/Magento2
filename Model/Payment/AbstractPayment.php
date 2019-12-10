@@ -116,6 +116,7 @@ abstract class AbstractPayment extends AbstractMethod
             $data
         );
 
+        $this->_scopeConfig = $scopeConfig;
         $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         // $this->_logger = $logger;
 
@@ -553,7 +554,15 @@ abstract class AbstractPayment extends AbstractMethod
      */
     public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
     {
-        if (parent::isAvailable($quote)) {
+        if (parent::isAvailable($quote)) {// This order total is between min and max amount configuration
+            $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORES;
+            $minAmount = $this->_scopeConfig->getValue('sfco/merchant/min_amount', $storeScope);
+            $maxAmount = $this->_scopeConfig->getValue('sfco/merchant/max_amount', $storeScope);
+            $total = $quote->getGrandTotal();
+            if (!($total >= $minAmount && $total <= $maxAmount)) {
+                return false;
+            }
+
             if ($this->getHasCctypes()) {
                 $cctypes = $this->getConfigData('cctypes', ($quote ? $quote->getStoreId() : null));
                 $cctypes = preg_replace('/NONE,?/', '', $cctypes);

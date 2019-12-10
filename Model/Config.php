@@ -50,7 +50,7 @@ class Config extends \Magento\Payment\Model\Config
     private $_urls = [
         'system' => [
             'test' => [
-                'https://preprod-tpeweb.paybox.fr/php/'
+                'https://preprod-tpeweb.paybox.com/php/'
             ],
             'production' => [
                 'https://tpeweb1.paybox.com/php/',

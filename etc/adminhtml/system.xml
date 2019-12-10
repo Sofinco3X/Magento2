@@ -91,26 +91,6 @@
                     <config_path>sfco/merchant/hmackey</config_path>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                 </field>
-                <field id="password" translate="label comment" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Sofinco Back Office password</label>
-                    <comment><![CDATA[Back Office password provided by Sofinco.]]></comment>
-                    <validate>required-entry</validate>
-                    <depends>
-                        <field id="subscription">essential</field>
-                    </depends>
-                    <config_path>sfco/merchant/password</config_path>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                </field>
-                <field id="passwordplus" translate="label comment" type="obscure" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Sofinco Back Office password</label>
-                    <comment><![CDATA[Back Office password provided by Sofinco.]]></comment>
-                    <validate>required-entry</validate>
-                    <depends>
-                        <field id="subscription">plus</field>
-                    </depends>
-                    <config_path>sfco/merchant/passwordplus</config_path>
-                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                </field>
             </group>
 	        <group id="misc" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
 	            <attribute type="expanded">1</attribute>
@@ -136,6 +116,18 @@
                     <source_model>Sofinco\Epayment\Model\Config\Source\ResponsiveYesNo</source_model>
                     <config_path>sfco/info/responsive</config_path>
                 </field>
+                <field id="min_amount" translate="label comment" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Min order amount</label>
+                    <validate>required-entry validate-digits validate-length maximum-length-9</validate>
+                    <config_path>sfco/merchant/min_amount</config_path>
+                </field>
+                <field id="max_amount" translate="label comment" type="text" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Max order amount</label>
+                    <validate>required-entry validate-digits validate-length maximum-length-9</validate>
+                    <config_path>sfco/merchant/max_amount</config_path>
+                </field>
             </group>
         </section>
         <section id="sfco_payments" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -143,21 +135,9 @@
         	<tab>sofinco</tab>
             <resource>Sofinco_Epayment::sofinco_config</resource>
 
-            <!--
-            <include path="Sofinco_Epayment::system/sfco_cb.xml"/>
-            <include path="Sofinco_Epayment::system/sfco_threetime.xml"/>
-            <include path="Sofinco_Epayment::system/sfco_private.xml"/>
-            <include path="Sofinco_Epayment::system/sfco_paypal.xml"/>
-            <include path="Sofinco_Epayment::system/sfco_prepaid.xml"/>
-            <include path="Sofinco_Epayment::system/sfco_financial.xml"/>
-            <include path="Sofinco_Epayment::system/sfco_bcmc.xml"/>
-            <include path="Sofinco_Epayment::system/sfco_maestro.xml"/>
-            <include path="Sofinco_Epayment::system/sfco_paybuttons.xml"/>
-            -->
-            
             <include path="Sofinco_Epayment::system/sfco_s3xcb.xml"/>
             <include path="Sofinco_Epayment::system/sfco_s3xcbsf.xml"/>
-            
+
         </section>
     </system>
 </config>

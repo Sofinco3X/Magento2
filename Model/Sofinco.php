@@ -23,6 +23,7 @@ namespace Sofinco\Epayment\Model;
 
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Payment\Transaction;
+use \SimpleXMLElement;
 use Sofinco\Epayment\Model\Payment\AbstractPayment;
 
 class Sofinco
@@ -444,16 +445,6 @@ class Sofinco
         $lang = $languages[$lang];
         $values['PBX_LANGUE'] = $lang;
 
-        // Choose page format depending on browser/devise
-/****removing mobile adaptation for sofinco 3XCB
-if ($this->_objectManager->get('Sofinco\Epayment\Helper\Mobile')->isMobile()) {
-            $values['PBX_SOURCE'] = 'XHTML';
-        }
-
-        if ($config->getResponsiveConfig() == 1) {
-            $values['PBX_SOURCE'] = 'RWD';
-        }
-****/
         //Paypal Specicif
         if ($payment->getCode() == 'sfco_paypal') {
             $separator = '#';
@@ -630,42 +621,44 @@ if ($this->_objectManager->get('Sofinco\Epayment\Helper\Mobile')->isMobile()) {
 
     public function getCustomerInformation(Order $order)
     {
-        $preScoringCode = '';
-        $birthDate = '1901-01-01';
+        $id = $order->getCustomerId();
 
-        if (null !== $order->getCustomerId()) {
-            $customer = $this->_objectManager
-                ->get('Magento\Customer\Model\Customer')
-                ->load($order->getCustomerId());
-        }
-
-
-        $xmlCustomerInformation = 
-        "<Customer>
-            <Custom>preScoringCode=$preScoringCode&amp;birthDate=$birthDate</Custom>
-        </Customer>";
-        
-        return simplexml_load_string($xmlCustomerInformation);
+        $simpleXMLElement = new SimpleXMLElement("<Customer/>");
+        $simpleXMLElement->addChild('Id',$id);
+        return trim(substr($simpleXMLElement->asXML(), 21));
     }
 
     public function getBillingInformation(Order $order)
     {
         $address = $order->getBillingAddress();
-        $firstName = remove_accents($order->getCustomerFirstname());
-        $lastName = remove_accents($order->getCustomerLastname());
-	$title =  $gender = $order->getCustomerGender();
-	if(empty($tilte))$title = "Mr";
-        $address1 = str_replace("."," ",is_array($address->getStreet()) ? $address->getStreet()[0] : $address->getStreet());
-        $address2 = is_array($address->getStreet()) ? str_replace("."," ",$address->getStreet()[1]) : "";
+        $firstName = $this->removeAccents($order->getCustomerFirstname());
+        $lastName = $this->removeAccents($order->getCustomerLastname());
+        $title = $order->getCustomerGender();
+        if (empty($title)) {
+            $title = "Mr";
+        }
+        $street = $address->getStreet();
+        $address1 = $street;
+        $address2 = '';
+        if (is_array($street)) {
+            if (!empty($street[0])) {
+                $address1 = $street[0];
+            }
+            if (!empty($street[1])) {
+                $address2 = $street[1];
+            }
+        }
+        $address1 = str_replace(".", " ", $this->removeAccents($address1));
+        $address2 = str_replace(".", " ", $this->removeAccents($address2));
         $zipCode = $address->getPostcode();
-        $city = remove_accents($address->getCity());
+        $city = $this->removeAccents($address->getCity());
         $countryCode = $this->getCountryCode($address->getCountryId());
-        $countryName = remove_accents($address->getCountryId());
+        $countryName = $this->removeAccents($address->getCountryId());
         $countryCodeHomePhone = $this->getCountryPhoneCode($address->getCountryId());
         $homePhone = substr($address->getTelephone(),-9);
         $countryCodeMobilePhone = $this->getCountryPhoneCode($address->getCountryId());
-        $mobilePhone = $address->getTelephone(),-9);
-        
+        $mobilePhone = substr($address->getTelephone(),-9);
+
         $simpleXMLElement = new SimpleXMLElement("<Billing/>");
         // $billingXML = $simpleXMLElement->addChild('Billing');
         $addressXML = $simpleXMLElement->addChild('Address');
@@ -682,11 +675,11 @@ if ($this->_objectManager->get('Sofinco\Epayment\Helper\Mobile')->isMobile()) {
         $addressXML->addChild('HomePhone',$homePhone);
         $addressXML->addChild('CountryCodeMobilePhone',$countryCodeMobilePhone);
         $addressXML->addChild('MobilePhone',$mobilePhone);
-        
-        return $simpleXMLElement->asXML();
+
+        return trim(substr($simpleXMLElement->asXML(), 21));
     }
-    
-	private function remove_accents($string){
+
+    private function removeAccents($string){
         $table = array(
         'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
         'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
@@ -697,22 +690,24 @@ if ($this->_objectManager->get('Sofinco\Epayment\Helper\Mobile')->isMobile()) {
         'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
         'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r',
         );
-   
+
         return strtr($string, $table);
-	}
- 
+    }
+
     public function getCountryCode($countryCode)
     {
         $countryMapper = $this->_objectManager->get('Sofinco\Epayment\Model\IsoCountry');
 
         return $countryMapper->getIsoCode($countryCode);
     }
+
      public function getCountryPhoneCode($countryCode)
     {
         $countryMapper = $this->_objectManager->get('Sofinco\Epayment\Model\IsoCountry');
 
         return $countryMapper->getPhoneCode($countryCode);
-    }   
+    }
+
     /**
      * @return Sofinco\Epayment\Model\Config Sofinco configuration object
      */

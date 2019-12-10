@@ -27,8 +27,6 @@ class Subscription implements \Magento\Framework\Option\ArrayInterface
     {
         return [
             ['value' => 'essential', 'label' => __('Paybox System (Essential Pack)')],
-            ['value' => 'flexible', 'label' => __('Paybox System + Paybox Direct (Flexible Pack)')],
-            ['value' => 'plus', 'label' => __('Paybox System + Paybox Direct Plus (Flexible Pack)')],
         ];
     }
 }

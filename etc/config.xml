@@ -27,11 +27,13 @@
                 <environment>TEST</environment>
                 <subscription>essential</subscription>
                 <site>8888872</site>
-                <rank>071</rank>
-                <identifier>3262411</identifier>
+                <rank>073</rank>
+                <identifier>7546450</identifier>
                 <password backend_model="Magento\Config\Model\Config\Backend\Encrypted">1999888I</password>
                 <hmackey backend_model="Magento\Config\Model\Config\Backend\Encrypted">0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF</hmackey>
                 <hmacalgo>SHA512</hmacalgo>
+                <min_amount>150</min_amount>
+                <max_amount>2000</max_amount>
             </merchant>
             <languages>
                 <fr>FRA</fr>
@@ -68,7 +70,7 @@
                         <label>CB</label>
                         <image>images/sfco/cb.45.png</image>
                         <payment>LIMONETIK</payment>
-                        <card>3XCB</card>
+                        <card>SOF3X</card>
                     </CB>
                 </cards>
             </sfco_s3xcb>
@@ -94,7 +96,7 @@
                         <label>CB</label>
                         <image>images/sfco/cb.45.png</image>
                         <payment>LIMONETIK</payment>
-                        <card>3XCBSF</card>
+                        <card>SOF3XSF</card>
                     </CB>
                 </cards>
             </sfco_s3xcbsf>

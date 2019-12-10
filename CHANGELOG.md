@@ -1,9 +1,8 @@
 # Change Log
 
-## [1.0.12] 2019-03-07
+## [1.0.14] 2019-12-09
 
-### Magento 2.3
-- Compatibilité : Nouvelle version du module pour Magento 2.3  https://gitlab.com/ETransactions/Magento2 
+- Ajout des montants min et max globaux
 
 ## [1.0.11] 2019-02-06
 
