@@ -631,8 +631,10 @@ class Sofinco
     public function getBillingInformation(Order $order)
     {
         $address = $order->getBillingAddress();
-        $firstName = $this->removeAccents($order->getCustomerFirstname());
-        $lastName = $this->removeAccents($order->getCustomerLastname());
+        if($order->getCustomerFirstname()!="")$firstName = $this->removeAccents($order->getCustomerFirstname());
+		else $firstName = $this->removeAccents($address->getFirstname());
+        if($order->getCustomerLastname()!="")$lastName = $this->removeAccents($order->getCustomerLastname());
+        else $lastName = $this->removeAccents($address->getLastname());
         $title = $order->getCustomerGender();
         if (empty($title)) {
             $title = "Mr";
